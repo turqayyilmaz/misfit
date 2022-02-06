@@ -1,0 +1,44 @@
+<%- contentFor("body") %>
+<%- include("./partials/_titleHead.ejs")%>
+
+<div id="contact" class="contact">
+    <div class="container">
+       <div class="row">
+          <div class="col-md-12">
+            <% if (flashMessages) { %>
+               <% if (flashMessages.success) { %>
+                   <div class="alert alert-success">
+                       <%= flashMessages.success %>
+                   </div>
+
+               <% } else if (flashMessages.error) { %>
+                   <div class="alert alert-danger">
+                       <%= flashMessages.error %>
+                   </div>
+               <% } %>
+
+           <% } %>
+          </div>
+          <div class="col-md-6 offset-3">
+             <form id="register" class="main_form" action="register" method="post">
+                <div class="row">
+                   <div class="col-md-12 ">
+                      <input class="contactus" placeholder="Your Name" type="type" name="name" id="name" required> 
+                   </div>
+                   <div class="col-md-12">
+                      <input class="contactus" placeholder="Email" type="email" name="email" id="email" required> 
+                   </div>
+                   
+                   <div class="col-md-12">
+                      <input class="contactus" placeholder="Password" type="password" name="password" id="password">                          
+                   </div>
+                   <div class="col-md-12">
+                      <button class="btn btn-success">Register</button>
+                   </div>
+                </div>
+             </form>
+          </div>
+        
+       </div>
+    </div>
+ </div>
