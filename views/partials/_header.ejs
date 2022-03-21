@@ -61,18 +61,20 @@
                 <li>
                   <div class="dropdown">
                     <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <% if(!userIN) { %> Login/Register <% } else { %>
+                      
+                      <%  
+                      if(!userIn) { %> Login/Register <% } else { %>
                             <%=userName %>
                           <small>(<%=role %>)</small>
                         <% } %>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                      <% if(!userIN) { %>
+                      <% if(!userIn) { %>
                         <a class="dropdown-item" href="/login">Login</a>
                         <a class="dropdown-item" href="/register">Register</a>      
                         
                         <% } else {%>
-                          <a class="dropdown-item" href="/user/dashboard">Dashboard</a>
+                          <a class="dropdown-item" href="/users/dashboard">Dashboard</a>
                           <a class="dropdown-item" href="/logout">Logout</a>      
 
                           <% } %>

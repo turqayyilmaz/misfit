@@ -13,13 +13,12 @@ const cors = require('cors');
 const path = require('path');
 const flash = require('connect-flash');
 
-const frontEndRoutes = require('./routes/frontEndRouters');
-const userRoutes = require('./routes/userRoutes');
+
 
 const app = express();
 const port = 3000;
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
@@ -28,35 +27,56 @@ app.set('layout extractScripts', true);
 app.set('layout', 'layouts\\indexLayout.ejs');
 app.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
 app.use(fileUpload());
+app.use(express.json()); // for parsing application/json
+
 
 //db settings and initiliaze
 
 const dbUrl = 'mongodb://localhost/misfit-db';
 app.use(
   session({
-    secret: 'qewrewqrewqrıuqoweqwyreoqewroıu', // Buradaki texti değiştireceğiz.
+    secret: 'my_keyboard_misfit',
     resave: false,
     saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: dbUrl }),
   })
 );
+global.userIN = null;
 app.use(flash());
 app.use((req, res, next) => {
   res.locals.flashMessages = req.flash();
   next();
 });
-
-global.userIN = null;
-//Routes
+app.use(fileUpload());
 app.use('*', (req, res, next) => {
-  userIN = req.session.userID;
-  res.locals.userName = req.session.userName;
-  res.locals.role = req.session.role;
-
-  next();
+    userIn = req.session.userID;
+    res.locals.userName = req.session.userName;
+    res.locals.role = req.session.role;
+    next();
 });
 
+app.use(methodOverride('_method', {
+  methods: ['GET', 'POST']
+}));
+
+
 //CONNECT DB
+
+const options = {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  autoIndex: true, //this is the code I added that solved it all
+  keepAlive: true,
+  poolSize: 10,
+  bufferMaxEntries: 0,
+  connectTimeoutMS: 10000,
+  socketTimeoutMS: 45000,
+  family: 4, // Use IPv4, skip trying IPv6
+  useFindAndModify: false,
+  useUnifiedTopology: true
+}
+
+
 mongoose
   .connect(dbUrl, {
     useNewUrlParser: true,
@@ -67,8 +87,16 @@ mongoose
   });
 
 //routes
-app.use('/', frontEndRoutes);
-app.use('/user', userRoutes);
+const pageRoute = require('./routes/pageRoute');
+const programRoute = require('./routes/programRoute');
+const categoryRoute = require('./routes/categoryRoute'); 
+const userRoute = require('./routes/userRoute');
+
+
+app.use('/', pageRoute);
+app.use('/users', userRoute);
+app.use('/programs', programRoute);
+app.use('/categories', categoryRoute);
 
 //application server is listening
 app.listen(port, () => console.info(`Misfit App listening on port ${port}`));

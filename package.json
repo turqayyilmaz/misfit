@@ -25,6 +25,7 @@
     "method-override": "^3.0.0",
     "mongoose": "^6.1.7",
     "mongoose-datatables": "^3.2.0",
+    "mongoose-unique-validator": "^3.0.0",
     "slugify": "^1.6.5"
   },
   "devDependencies": {
