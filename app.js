@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const express = require('express');
+
+
+
 const bycrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const session = require('express-session');
@@ -15,19 +18,26 @@ const flash = require('connect-flash');
 
 
 
+
+
+
+
 const app = express();
 const port = 3000;
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(fileUpload());
+app.use(express.json());
+
+
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
 app.set('layout extractScripts', true);
 app.set('layout', 'layouts\\indexLayout.ejs');
 app.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
-app.use(fileUpload());
-app.use(express.json()); // for parsing application/json
+
 
 
 //db settings and initiliaze
@@ -47,7 +57,7 @@ app.use((req, res, next) => {
   res.locals.flashMessages = req.flash();
   next();
 });
-app.use(fileUpload());
+
 app.use('*', (req, res, next) => {
     userIn = req.session.userID;
     res.locals.userName = req.session.userName;

@@ -4,6 +4,7 @@ const { validationResult } = require('express-validator');
 const User = require('../models/User');
 const Category = require('../models/Category');
 const Program = require('../models/Program');
+const utils = require('../controllers/utils');
 
 exports.createUser = async (req, res) => {
   try {
@@ -11,10 +12,6 @@ exports.createUser = async (req, res) => {
     user.image = '/uploads/default-user-photo.png';
     await user.save();
 
-    console.log('created user: ', {
-      status: 'success',
-      user: user,
-    });
     res.status(201).redirect('/login');
   } catch (err) {
     const errors = validationResult(req);
@@ -35,30 +32,21 @@ exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email: email });
-
     if (user) {
       bcrypt.compare(password, user.password, (err, same) => {
         if (same) {
-          console.log('loggedin user: ', {
-            status: 'success',
-            user: user,
-          });
           req.session.userID = user._id;
-          
           req.session.userName = user.name;
           req.session.role = user.role;
           res.status(200).redirect('/users/dashboard');
         } else {
-          console.error('Invalid user credentials.');
           res.status(400).redirect('/login');
         }
       });
     } else {
-      console.error('Invalid user credentials.');
       res.status(400).redirect('/login');
     }
   } catch (err) {
-    console.log(err.message);
     res.status(400).json({
       status: 'failed',
       error: err.message,
@@ -87,9 +75,8 @@ exports.deleteUser = async (req, res) => {
 };
 
 exports.getDashboardPage = async (req, res) => {
-
-    res.locals.pageName = 'dashboard';
-    res.locals.pageTitle = 'Dashboard';
+  res.locals.pageName = 'dashboard';
+  res.locals.pageTitle = 'Dashboard';
   try {
     const user = await User.findOne({ _id: req.session.userID }).populate(
       'enrolledPrograms'
@@ -107,7 +94,6 @@ exports.getDashboardPage = async (req, res) => {
       users: users,
     });
   } catch (err) {
-    console.log(err.message);
     res.status(400).json({
       pageName: 'dashboard',
       message: err.message,
@@ -143,21 +129,17 @@ exports.addProfilePhoto = async (req, res) => {
     let uploadPath = __dirname + '/../public/uploads/';
     let imagePath = '';
 
-    if (req.files) {
-      uploadPath += req.files.image.name;
-      imagePath = '/uploads/' + req.files.image.name;
-    }
-
-    const user = await User.findById(req.params.id);
-
-    if (req.files) {
+    //console.log('files:', req.files.photoInput);
+    profileImage = req.files.photoInput;
+    if (profileImage) {
+      uploadPath += profileImage.name;
+      imagePath = '/uploads/' + profileImage.name;
+      const user = await User.findById(req.params.id);
       user.image = imagePath;
-      await req.files.image.mv(uploadPath);
+      await profileImage.mv(uploadPath);
+      await user.save();
+      res.status(200).redirect('/users/dashboard');
     }
-
-    await user.save();
-
-    res.status(200).redirect('/users/dashboard');
   } catch (err) {
     console.error(err);
     res.status(400).json({

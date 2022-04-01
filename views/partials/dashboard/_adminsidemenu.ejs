@@ -1,8 +1,93 @@
-<ul class="list-group">
-    <li class="list-group-item d-flex justify-content-between align-items-center">
-      <img src="<%= user.image %>">
-      <%=userName%><br>
-      (<%=role%>)
-     </li>
-    
-  </ul>
+<style>
+  #edit {
+    position: absolute;
+    top: 10px;
+    right: 60px;
+
+    border-radius: 100%;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    vertical-align: middle;
+    text-align: center;
+    color: #0000ff;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .border-5 {
+    border-width: 5px !important;
+  }
+
+  .profile_image {
+    height: 160px;
+    width: 160px;
+    border-radius: 50%;
+    border: 5px solid #022c53;
+  }
+</style>
+<div
+  class="modal fade"
+  id="profileImageModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="profileImageModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="profileImageModalLabel">Modal title</h1>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          id="photoForm"
+          class="main_form"
+          method="post"
+          action="/users/profileImage/<%= user._id%>"
+          enctype="multipart/form-data"
+        >
+          <div class="col-md-12 mb-2">
+            <input
+              type="file"
+              id="photoInput"
+              name="photoInput"
+              data-buttonText="Photo"
+              class="img-fluid d-block mx-0 rounded-0"
+            />
+          </div>
+
+          <div class="col-md-12">
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card text-center">
+  <div
+    class="back_re rounded-circle mx-auto"
+    style="height: 160px; width: 160px"
+  >
+    <img src="<%= user.image %>" class="profile_image mx-auto" style="" />
+  </div>
+  <a href="#" data-toggle="modal" data-target="#profileImageModal"
+    ><i class="fa fa-edit bg-success text-light" id="edit"></i
+  ></a>
+  <h3><%=userName%></h3>
+  <h3>(<%=role%>)</h3>
+  <hr />
+  <h5 class="text-left"><b>Email: </b><%= user.email%></h5>
+  <h5 class="text-left"><b>Phone: </b><%= user.phone%></h5>
+  <button class="btn back_re btn-dark mt-2">Update Profile</button>
+  <button class="btn back_re btn-dark mt-2">Add Category</button>
+</div>
