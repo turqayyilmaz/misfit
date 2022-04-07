@@ -43,8 +43,7 @@
   <h5 class="text-left"><b>Phone: </b><%= user.phone%></h5>
   <a
     class="btn back_re btn-dark mt-2"
-    data-toggle="modal"
-    data-target="#profileModal"
+    onclick="userProfileModal('<%=user._id %>')"
     href="#"
     >Update Profile</a
   >
@@ -107,97 +106,6 @@
 <!--Profile Image Update Modal-->
 
 <!--Profile Update Modal-->
-<div
-  class="modal fade"
-  id="profileModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="profileModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title" id="profileModalLabel">Profile Update</h1>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form
-          id="profileForm"
-          class="main_form"
-          method="post"
-          action="/users/<%= user._id%>/?_method=PUT"
-        >        
-          <div class="form-group mb-2">
-            <label for="name">Name</label>
-
-            <input
-              type="text"
-              id="name"
-              name="name"
-              class="form-control"
-              placeholder="Name"
-            />
-          </div>
-          <div class="form-group mb-2">
-            <label for="email">Email address</label>
-            <input
-              type="text"
-              id="email"
-              name="email"
-              class="form-control"
-              placeholder="Email"
-            />
-          </div>
-
-          <div class="form-group mb-2">
-            <label for="phone">Phone number</label>
-            <input
-              type="text"
-              id="phone"
-              name="phone"
-              class="form-control"
-              placeholder="Phone Number"
-            />
-          </div>
-
-          <div class="form-group mb-2">
-            <label for="password">Password</label>
-            <input
-              type="text"
-              id="password"
-              name="password"
-              class="form-control"
-              placeholder="Password"
-            />
-          </div>
-
-          <div class="form-group mb-2">
-            <label for="Role">Role</label>
-            <select class="form-control" name="role" id="role" disabled="disabled">
-              <option value="member">Member</option>
-              <option value="trainer">Trainer</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-
-          <div class="col-md-12 text-right">
-            <button type="reset" class="btn btn-secondary" data-dismiss="modal">
-              Close
-            </button>
-            <button type="submit" class="btn btn-success">Save changes</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+<%- include("../../partials/dashboard/modals/_userModal.ejs") %>
 
 <!--Profile Update Modal-->

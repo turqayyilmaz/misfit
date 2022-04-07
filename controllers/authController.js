@@ -73,6 +73,21 @@ exports.deleteUser = async (req, res) => {
     });
   }
 };
+exports.getUserJson = async (req,res)=>{
+
+  try {
+    const user = await User.findOne({ _id: req.session.userID });
+    res.send({status:"success",
+    user});
+  }
+  catch{
+    res.status(400).json({
+      status:"error",
+      message: err.message,
+    });
+  }
+
+}
 
 exports.getDashboardPage = async (req, res) => {
   res.locals.pageName = 'dashboard';
@@ -104,10 +119,18 @@ exports.getDashboardPage = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
+    
     user.name = req.body.name;
+    user.email = req.body.email;
     user.phone = req.body.phone;
-
+    if(req.body.password!="") user.password=req.body.password;
+  
     await user.save();
+    if(req.params.id=== req.session.userID){
+      
+      req.session.userName = user.name;
+      req.session.role = user.role;
+    }
 
     res.status(200).redirect('/users/dashboard');
   } catch (err) {

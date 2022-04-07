@@ -16,5 +16,6 @@ router.route('/logout').get(authController.logoutUser);
 router.route('/dashboard').get(authMiddleware, authController.getDashboardPage);
 router.route('/:id').delete(authController.deleteUser);
 router.route('/:id').put(authController.updateUser);
+router.route('/:id').get(authController.getUserJson);
 router.route('/profileImage/:id').post(authController.addProfilePhoto);
 module.exports = router;
