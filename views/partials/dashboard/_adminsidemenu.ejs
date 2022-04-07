@@ -25,6 +25,33 @@
     border: 5px solid #022c53;
   }
 </style>
+
+<div class="card text-center">
+  <div
+    class="back_re rounded-circle mx-auto"
+    style="height: 160px; width: 160px"
+  >
+    <img src="<%= user.image %>" class="profile_image mx-auto" />
+  </div>
+  <a href="#" data-toggle="modal" data-target="#profileImageModal"
+    ><i class="fa fa-edit bg-success text-light" id="edit"></i
+  ></a>
+  <h3><%=userName%></h3>
+  <h3>(<%=role%>)</h3>
+  <hr />
+  <h5 class="text-left"><b>Email: </b><%= user.email%></h5>
+  <h5 class="text-left"><b>Phone: </b><%= user.phone%></h5>
+  <a
+    class="btn back_re btn-dark mt-2"
+    data-toggle="modal"
+    data-target="#profileModal"
+    href="#"
+    >Update Profile</a
+  >
+  <a class="btn back_re btn-dark mt-2" href="#">Add Category</a>
+</div>
+
+<!--Profile Image Update Modal-->
 <div
   class="modal fade"
   id="profileImageModal"
@@ -36,7 +63,9 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title" id="profileImageModalLabel">Modal title</h1>
+        <h1 class="modal-title" id="profileImageModalLabel">
+          Profile Image Update
+        </h1>
         <button
           type="button"
           class="close"
@@ -64,8 +93,10 @@
             />
           </div>
 
-          <div class="col-md-12">
-            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <div class="col-md-12 text-right">
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">
+              Close
+            </button>
             <button type="submit" class="btn btn-success">Save changes</button>
           </div>
         </form>
@@ -73,21 +104,100 @@
     </div>
   </div>
 </div>
-<div class="card text-center">
-  <div
-    class="back_re rounded-circle mx-auto"
-    style="height: 160px; width: 160px"
-  >
-    <img src="<%= user.image %>" class="profile_image mx-auto" style="" />
+<!--Profile Image Update Modal-->
+
+<!--Profile Update Modal-->
+<div
+  class="modal fade"
+  id="profileModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="profileModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="profileModalLabel">Profile Update</h1>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          id="profileForm"
+          class="main_form"
+          method="post"
+          action="/users/<%= user._id%>/?_method=PUT"
+        >        
+          <div class="form-group mb-2">
+            <label for="name">Name</label>
+
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-control"
+              placeholder="Name"
+            />
+          </div>
+          <div class="form-group mb-2">
+            <label for="email">Email address</label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              class="form-control"
+              placeholder="Email"
+            />
+          </div>
+
+          <div class="form-group mb-2">
+            <label for="phone">Phone number</label>
+            <input
+              type="text"
+              id="phone"
+              name="phone"
+              class="form-control"
+              placeholder="Phone Number"
+            />
+          </div>
+
+          <div class="form-group mb-2">
+            <label for="password">Password</label>
+            <input
+              type="text"
+              id="password"
+              name="password"
+              class="form-control"
+              placeholder="Password"
+            />
+          </div>
+
+          <div class="form-group mb-2">
+            <label for="Role">Role</label>
+            <select class="form-control" name="role" id="role" disabled="disabled">
+              <option value="member">Member</option>
+              <option value="trainer">Trainer</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+
+          <div class="col-md-12 text-right">
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">
+              Close
+            </button>
+            <button type="submit" class="btn btn-success">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-  <a href="#" data-toggle="modal" data-target="#profileImageModal"
-    ><i class="fa fa-edit bg-success text-light" id="edit"></i
-  ></a>
-  <h3><%=userName%></h3>
-  <h3>(<%=role%>)</h3>
-  <hr />
-  <h5 class="text-left"><b>Email: </b><%= user.email%></h5>
-  <h5 class="text-left"><b>Phone: </b><%= user.phone%></h5>
-  <button class="btn back_re btn-dark mt-2">Update Profile</button>
-  <button class="btn back_re btn-dark mt-2">Add Category</button>
 </div>
+
+<!--Profile Update Modal-->

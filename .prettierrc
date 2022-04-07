@@ -2,5 +2,8 @@
   "tabWidth": 2,
   "useTabs": false,
   "singleQuote": true,
-  "semi": true
+  "semi": true,
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+}
 }
