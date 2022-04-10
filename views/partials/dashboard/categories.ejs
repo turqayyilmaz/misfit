@@ -1,0 +1,45 @@
+
+    <div class="col-md-12 mt-3">
+        <a href="#" class="btn btn-success float-right" onclick="categoryModal('new')"
+          >Add Category</a
+        >
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Category Name</th>
+              <th scope="col">Slug</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            <% 
+            let i=1;
+            categories.forEach((category)=>{
+               %>
+            <tr>
+              <td scope="col"><%=i++ -%></td>
+              <td scope="col"><%=category.name%></td>
+              <td scope="col"><%=category.slug%></td>
+              <td scope="col">
+                <a
+                  href="#"
+                  onclick="categoryModal('<%=category._id%>')"
+                  class="btn btn-success"
+                  >Edit</a
+                >
+                <a
+                  href="#"
+                  onclick="categoryDelete('<%=category._id%>')"
+                  class="btn btn-danger"
+                  >Delete</a
+                >
+              </td>
+            </tr>
+            <%})%>
+          </tbody>
+        </table>
+      </div>
+      <%- include("modals/_categoryModal.ejs") %> 
+  
+  

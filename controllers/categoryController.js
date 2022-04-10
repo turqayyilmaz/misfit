@@ -2,52 +2,59 @@ const Category = require('../models/Category');
 const Program = require('../models/Program');
 
 exports.createCategory = async (req, res) => {
-    
-    try {
-        const category = await Category.create(req.body);
-        res.status(201).redirect('/users/dashboard');
-    } catch (error) {
-        res.status(400).json({
-            status: 'fail category creation',
-            error: error
-        });
-    }
+  try {
+    const category = await Category.create(req.body);
+    res.status(201).redirect('/users/dashboard');
+  } catch (error) {
+    res.status(400).json({
+      status: 'fail category creation',
+      error: error,
+    });
+  }
 };
 
-exports.deleteCategory= async (req, res) => {
-    try {
-        
-        const programs = await Program.find({category: req.params.id});
-        console.log('category: programs: ', programs);
-        programs.forEach(async (program) => {
-            program.category = undefined;
-            await program.save();
-        });
+exports.deleteCategory = async (req, res) => {
+  try {
+    const programs = await Program.find({ category: req.params.id });
+    console.log('category: programs: ', programs);
+    programs.forEach(async (program) => {
+      program.category = undefined;
+      await program.save();
+    });
 
-        await Category.findOneAndDelete({_id: req.params.id});
+    await Category.findOneAndDelete({ _id: req.params.id });
 
-        res.status(200).redirect('/users/dashboard');
-    
-    } catch (error) {
-        res.status(400).json({
-            status: 'fail deleting the user',
-            error: error
-        });
-    }
+    res.status(200).redirect('/users/dashboard');
+  } catch (error) {
+    res.status(400).json({
+      status: 'fail deleting the user',
+      error: error,
+    });
+  }
 };
 
+exports.getCategoryJson = async (req, res) => {
+  try {
+    const category = await Category.findOne({ _id: req.params.id });
+    res.send({ status: 'success', category });
+  } catch (err) {
+    res.status(400).json({
+      status: 'error',
+      message: err.message,
+    });
+  }
+};
 exports.updateCategory = async (req, res) => {
-    try {
-        const category = await Category.findOne({_id: req.params.id});
-        category.name = req.body.name;
-        category.save();
+  try {
+    const category = await Category.findOne({ _id: req.params.id });
+    category.name = req.body.name;
+    category.save();
 
-        res.status(201).redirect('/users/dashboard');
-    } 
-    catch (error) {
-        res.status(400).json({
-            status: 'fail update the category',
-            error: error
-        });
-    }
+    res.status(201).redirect('/users/dashboard');
+  } catch (error) {
+    res.status(400).json({
+      status: 'fail update the category',
+      error: error,
+    });
+  }
 };

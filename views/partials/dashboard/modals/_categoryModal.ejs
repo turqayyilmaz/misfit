@@ -1,0 +1,106 @@
+<div
+  class="modal fade"
+  id="categoryModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="categoryModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title" id="categoryModalLabel">CAtegory Add/Update</h1>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form
+          id="categoryForm"
+          class="main_form"
+          method="post"
+          action="/categories/"
+        >
+          <div class="form-group mb-2">
+            <label for="name">Name</label>
+
+            <input
+              type="text"
+              id="name"
+              name="name"
+              class="form-control"
+              placeholder="Name"
+            />
+          </div>
+
+          <div class="col-md-12 text-right">
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">
+              Close
+            </button>
+            <button type="submit" class="btn btn-success">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const categoryModal = async (categoryId = '') => {
+    let category = {
+      _id:'',
+      name: '',
+      slug:''
+    };
+
+    if (categoryId == 'new') {
+      console.log('yeni category islemleri');
+    } else {
+      
+      let res = await fetch(window.location.origin + '/categories/' + categoryId);
+      res = await res.json();
+      console.log(res);
+      if (res.status == 'success') {
+        category = res.category;
+      } else {
+        alert('Error:', res.message);
+      }
+    }
+    console.log(category);
+    categoryFormFill(category);
+    $('#categoryModal').modal();
+  };
+
+  const categoryFormFill = (category) => {
+    const form = document.getElementById('categoryForm');
+    console.log('category _id: ', category._id);
+    if (category._id == '') {
+      form.action = window.location.origin + '/categories/';
+    } else {
+      form.action =
+        window.location.origin + '/categories/' + category._id + '/?_method=put';
+    }
+    form.name.value = category.name;
+    
+  };
+
+  const categoryDelete = (categoryId) => {
+    Swal.fire({
+      title: 'Do you want to delete Category?',
+      showConfirmButton: false,
+      showDenyButton: true,
+      showCancelButton: true,
+      denyButtonText: `Delete Category`,
+    }).then(async (result) => {
+      if (result.isDenied) {
+        window.location =
+          window.location.origin + '/categories/' + categoryId + '/?_method=delete';
+      }
+    });
+  };
+</script>
