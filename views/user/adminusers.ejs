@@ -1,11 +1,6 @@
-<%- contentFor("body") %> <%- include("../partials/_titleHead.ejs")%>
-<div class="container">
-  <div class="row">
-    <div class="col-md-3 mt-3">
-      <%- include("../partials/dashboard/_adminsidemenu.ejs")%>
-    </div>
-    <div class="col-md-9 mt-3">
-      <a href="#" class="btn btn-success float-right" onclick="editUser('')"
+
+    <div class="col-md-12 mt-3">
+      <a href="#" class="btn btn-success float-right" onclick="userProfileModal('new')"
         >Add User</a
       >
       <table class="table table-bordered">
@@ -33,7 +28,7 @@
             <td scope="col">
               <a
                 href="#"
-                onclick="editUser('<%=user._id%>')"
+                onclick="userProfileModal('<%=user._id%>')"
                 class="btn btn-success"
                 >Edit</a
               >
@@ -49,77 +44,5 @@
         </tbody>
       </table>
     </div>
-  </div>
-</div>
+ 
 
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="userModal"
-  tabindex="-1"
-  role="dialog"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title" id="exampleModalLabel">Add/Update User</h2>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="container">
-          <div class="row">
-            
-             <div class="col-md-12 ">
-                <form id="register" class="main_form" action="register" method="post">
-                   <div class="row">
-                      <div class="col-md-12 ">
-                         <input class="contactus" placeholder="Name" type="type" name="name" id="name" required> 
-                      </div>
-                      <div class="col-md-12">
-                         <input class="contactus" placeholder="Email" type="email" name="email" id="email" required> 
-                      </div>
-                      
-                      <div class="col-md-12">
-                         <input class="contactus" placeholder="Password" type="password" name="password" id="password">                          
-                      </div>
-                      <div class="col-md-12">
-                        <select name="role" id="role" class="contactus">
-                          <option value="">Select Role</option>
-                          <option value="member">Member</option>
-                          <option value="trainer">Trainer</option>
-                          <option value="admin">Admin</option>
-                        </select>
-                     </div>
-                     
-                   </div>
-                </form>
-             </div>
-           
-          </div>
-       </div>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          Close
-        </button>
-        <button type="button" class="btn btn-Close btn-success">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  function editUser(id) {
-    $('#userModal').modal();
-  }
-</script>

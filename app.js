@@ -38,6 +38,8 @@ app.set('layout extractScripts', true);
 app.set('layout', 'layouts\\indexLayout.ejs');
 app.use(methodOverride('_method', { methods: ['POST', 'GET'] }));
 
+app.use(express.static(path.join(__dirname, 'node_modules')));
+
 
 
 //db settings and initiliaze

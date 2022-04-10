@@ -63,7 +63,7 @@ exports.logoutUser = (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
-    const program = await Program.deleteMany({ trainerID: req.params.id });
+//    const program = await Program.deleteMany({ trainerID: req.params.id });
 
     res.status(200).redirect('/users/dashboard');
   } catch (err) {
@@ -74,13 +74,13 @@ exports.deleteUser = async (req, res) => {
   }
 };
 exports.getUserJson = async (req,res)=>{
-
+console.log(req.params)
   try {
-    const user = await User.findOne({ _id: req.session.userID });
+    const user = await User.findOne({ _id: req.params.id });
     res.send({status:"success",
     user});
   }
-  catch{
+  catch(err){
     res.status(400).json({
       status:"error",
       message: err.message,
@@ -124,8 +124,10 @@ exports.updateUser = async (req, res) => {
     user.email = req.body.email;
     user.phone = req.body.phone;
     if(req.body.password!="") user.password=req.body.password;
-  
-    await user.save();
+
+    await user.save({
+      validateModifiedOnly: true,
+    });
     if(req.params.id=== req.session.userID){
       
       req.session.userName = user.name;
@@ -135,7 +137,7 @@ exports.updateUser = async (req, res) => {
     res.status(200).redirect('/users/dashboard');
   } catch (err) {
     res.status(400).json({
-      status: 'failed',
+      status: 'failed update user',
       error: err.message,
     });
   }

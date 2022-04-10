@@ -9,7 +9,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title" id="profileModalLabel">Profile Update</h1>
+        <h1 class="modal-title" id="profileModalLabel">User Add/Update</h1>
         <button
           type="button"
           class="close"
@@ -25,7 +25,7 @@
           class="main_form"
           method="post"
           action="/users/<%= user._id%>/?_method=PUT"
-        >        
+        >
           <div class="form-group mb-2">
             <label for="name">Name</label>
 
@@ -72,9 +72,8 @@
 
           <div class="form-group mb-2">
             <label for="Role">Role</label>
-            
-            <select class="form-control" name="role" id="role" 
-             <%= user.role=='admin'?'':'disabled=disabled' %> >
+
+            <select class="form-control" name="role" id="role" <%= user.role=='admin'?'':'disabled=disabled' %>>
               <option value="member">Member</option>
               <option value="trainer">Trainer</option>
               <option value="admin">Admin</option>
@@ -94,39 +93,62 @@
 </div>
 
 <script>
-    const userProfileModal=async (userId="")=>{
-        if(userId=="new"){
-            console.log("yeni user islemleri");
-        }
-        else{
-            console.log("user get",window.location.origin+"/users/"+userId);
-            let res=await fetch(window.location.origin+"/users/"+userId);
-            res=await res.json();
-            let user={_id:"",name:"",email:"",password:"",phone:"",role:"member"}
-            if(res.status=="success"){
-                user=res.user;
-            }
-            else{
-                alert("Error:",res.message);
-            }
-            
-            userProfileFormFill(user);
-            console.log(res.user);
-            
-            
+  const userProfileModal = async (userId = '') => {
+    let user = {
+      _id: '',
+      name: '',
+      email: '',
+      password: '',
+      phone: '',
+      role: 'member',
+    };
 
-
-        }
-        $("#profileModal").modal();
+    if (userId == 'new') {
+      console.log('yeni user islemleri');
+    } else {
+      console.log('user get', window.location.origin + '/users/' + userId);
+      let res = await fetch(window.location.origin + '/users/' + userId);
+      res = await res.json();
+      console.log(res);
+      if (res.status == 'success') {
+        user = res.user;
+      } else {
+        alert('Error:', res.message);
+      }
     }
+    console.log(user);
+    userProfileFormFill(user);
+    $('#profileModal').modal();
+  };
 
-    const userProfileFormFill=(user)=>{
-        const form= document.getElementById("profileForm");
-        form.action=window.location.origin+"/users/"+user._id+"/?_method=put";
-        form.name.value=user.name;
-        form.email.value=user.email;
-        form.phone.value=user.phone; 
-        form.role.value=user.role;       
-        form.password.value=""; 
+  const userProfileFormFill = (user) => {
+    const form = document.getElementById('profileForm');
+    console.log('user_id: ', user._id);
+    if (user._id == '') {
+      form.action = window.location.origin + '/users/';
+    } else {
+      form.action =
+        window.location.origin + '/users/' + user._id + '/?_method=put';
     }
+    form.name.value = user.name;
+    form.email.value = user.email;
+    form.phone.value = user.phone;
+    form.role.value = user.role;
+    form.password.value = '';
+  };
+
+  const userDelete = (userId) => {
+    Swal.fire({
+      title: 'Do you want to delete?',
+      showConfirmButton: false,
+      showDenyButton: true,
+      showCancelButton: true,
+      denyButtonText: `Delete User`,
+    }).then(async (result) => {
+      if (result.isDenied) {
+        window.location =
+          window.location.origin + '/users/' + userId + '/?_method=delete';
+      }
+    });
+  };
 </script>
